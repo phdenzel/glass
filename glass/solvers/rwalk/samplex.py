@@ -4,7 +4,7 @@ import time
 import numpy as np
 from numpy.random import random, normal, random_integers, seed as ran_set_seed
 from numpy.linalg import eigh, pinv, eig, norm, inv, det
-import scipy.linalg.blas
+import scipy.linalg.fblas
 
 import multiprocessing.dummy as MP
 from Queue import Empty as QueueEmpty
@@ -510,6 +510,7 @@ class Samplex:
         j = 0
         for i in xrange(burnin_len):
             j += 1
+
             k,vec = q.get()
 
             store[:, n_stored] = vec

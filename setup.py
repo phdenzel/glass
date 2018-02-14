@@ -4,9 +4,8 @@ from distutils.sysconfig import get_python_lib, get_python_inc
 import distutils.sysconfig 
 from distutils.ccompiler import new_compiler
 
-compiler='clang'
-#compiler='gcc'
-#compiler='gcc-6'
+#compiler='clang'
+compiler='gcc'
 #compiler='icc'
 
 try:
@@ -51,29 +50,7 @@ if compiler=='gcc':
                           #'-march=core2',
                           '-O3',
                           '-mtune=native',
-                          '-openmp',
-                          '-Wall']
-    extra_link_args = ['-lgomp']
-
-if compiler=='gcc-6':
-    extra_compile_args = ['-msse3', 
-                          #'-mfpmath=sse',
-                          '-ftree-vectorize',
-                          '-ftree-vectorizer-verbose=4',
-                          #'-funsafe-math-optimizations',
-                          '-fno-omit-frame-pointer',
-                          #'-floop-optimize2',
-                          '-funroll-loops',
-                          '-fprefetch-loop-arrays',
-                          '-fstrict-aliasing',
-                          '-mpreferred-stack-boundary=4',
-                          '-std=c99',
-                          #'-I/local/ATLAS/include',
-                          #'-malign-double',
-                          #'-march=core2',
-                          '-O3',
-                          '-mtune=native',
-                          '-openmp',
+                          '-fopenmp',
                           '-Wall']
     extra_link_args = ['-lgomp']
 
