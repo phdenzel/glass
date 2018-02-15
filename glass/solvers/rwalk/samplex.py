@@ -10,6 +10,7 @@ except:
     from scipy.linalg import _fblas as fblas
 
 import multiprocessing.dummy as MP
+# import multiprocessing as MP
 from Queue import Empty as QueueEmpty
 
 from glass.solvers.error import GlassSolverError
