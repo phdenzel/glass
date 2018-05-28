@@ -66,7 +66,7 @@ class SamplexSolution:
         self.lhv = None
         self.vertex = None
 
-def rwalk_burnin(id, nmodels, burnin_len, samplex, q, cmdq, ackq, vec, twiddle, eval,evec):
+def rwalk_burnin(id, nmodels, burnin_len, samplex, q, cmdq, ackq, vec, twiddle, eval,evec, seed):
 
     S   = np.zeros(samplex.eqs.shape[0])
     S0  = np.zeros(samplex.eqs.shape[0])
@@ -86,7 +86,10 @@ def rwalk_burnin(id, nmodels, burnin_len, samplex, q, cmdq, ackq, vec, twiddle, 
     #vec[:] = np.dot(evec.T, vec)
     I = np.eye(evec.shape[0]).copy('F')
 
-    csamplex.set_rwalk_seed(1 + id + samplex.random_seed)
+    #csamplex.set_rwalk_seed(1 + id + samplex.random_seed)
+    csamplex.set_rwalk_seed(1 + seed)
+
+    log_time = time.clock()
 
     offs = ' '*36
     i = 0
@@ -130,7 +133,6 @@ def rwalk_burnin(id, nmodels, burnin_len, samplex, q, cmdq, ackq, vec, twiddle, 
             Naccepted,Nrejected,t = csamplex.rwalk(samplex, eqs, vec,eval,S,S0, twiddle, Naccepted,Nrejected)
 
             r = Naccepted / (Naccepted + Nrejected)
-            msg = 'THREAD %3i]  %i/%i  %4.1f%% accepted  (%6i/%6i Acc/Rej)  twiddle %5.2f  time %5.3fs' % (id, i, burnin_len, 100*r, Naccepted, Nrejected, twiddle, t)
 
             #-------------------------------------------------------------------
             # If the actual acceptance rate was OK then leave this loop,
@@ -149,7 +151,11 @@ def rwalk_burnin(id, nmodels, burnin_len, samplex, q, cmdq, ackq, vec, twiddle, 
                 twiddle = max(1e-14,twiddle)
                 state = 'R' + state
 
-            Log( offs + '% 2s %s' % (state, msg), overwritable=True )
+            if time.clock() - log_time > 3:
+                msg = 'THREAD %3i]  %i/%i  %4.1f%% accepted  (%6i/%6i Acc/Rej)  twiddle %5.2f  time %5.3fs' % (id, i, burnin_len, 100*r, Naccepted, Nrejected, twiddle, t)
+                Log( offs + '% 2s %s' % (state, msg), overwritable=True )
+                log_time = time.clock()
+
             #print ' '*36, '% 2s %s' % (state, msg)
 
         vec[:] = np.dot(evec, vec)
@@ -168,7 +174,7 @@ def rwalk_burnin(id, nmodels, burnin_len, samplex, q, cmdq, ackq, vec, twiddle, 
 
     time_begin = time.clock()
     if cmd[0] == 'RWALK':
-        rwalk(id, nmodels, samplex, q, cmdq, vec, twiddle, eval, evec)
+        rwalk(id, nmodels, samplex, q, cmdq, vec, twiddle, eval, evec, seed=None)
     time_end = time.clock()
 
     cmd = cmdq.get()
@@ -177,7 +183,7 @@ def rwalk_burnin(id, nmodels, burnin_len, samplex, q, cmdq, ackq, vec, twiddle, 
 
     #print ' '*39, 'RWALK THREAD %i LEAVING  n_stored=%i  time=%.4fs' % (id,i,time_end-time_begin)
 
-def rwalk(id, nmodels, samplex, q, cmdq, vec,twiddle, eval,evec):
+def rwalk(id, nmodels, samplex, q, cmdq, vec,twiddle, eval,evec,seed):
 
     S   = np.zeros(samplex.eqs.shape[0])
     S0  = np.zeros(samplex.eqs.shape[0])
@@ -193,7 +199,10 @@ def rwalk(id, nmodels, samplex, q, cmdq, vec,twiddle, eval,evec):
 
     eqs[:,1:] = np.dot(samplex.eqs[:,1:], evec)
 
-    csamplex.set_rwalk_seed(1 + id + samplex.random_seed)
+    #csamplex.set_rwalk_seed(1 + id + samplex.random_seed)
+    if seed is not None: csamplex.set_rwalk_seed(1 + seed)
+
+    log_time = time.clock()
 
     offs = ' '*36
     state = ''
@@ -209,7 +218,11 @@ def rwalk(id, nmodels, samplex, q, cmdq, vec,twiddle, eval,evec):
         vec[:] = np.dot(evec, vec)
 
         r = accepted / (accepted + rejected)
-        Log( offs + '% 2s THREAD %3i  %i  %4.1f%% accepted  (%6i/%6i Acc/Rej)  twiddle %5.2f  time %5.3fs  %i left.' % (state, id, i, 100*r, accepted, rejected, twiddle, t, nmodels-i), overwritable=True )
+
+        if time.clock() - log_time > 3:
+            Log( offs + '% 2s THREAD %3i  %i  %4.1f%% accepted  (%6i/%6i Acc/Rej)  twiddle %5.2f  time %5.3fs  %i left.' % (state, id, i, 100*r, accepted, rejected, twiddle, t, nmodels-i), overwritable=True )
+            log_time = time.clock()
+
         #print ' '*36, '% 2s THREAD %3i  %i  %4.1f%% accepted  (%6i/%6i Acc/Rej)  twiddle %5.2f  time %5.3fs  %i left.' % (state, id, i, 100*r, accepted, rejected, twiddle, t, nmodels-i)
         assert np.all(vec >= 0), vec[vec < 0]
         #if numpy.any(vec < 0): sys.exit(0)
@@ -450,6 +463,9 @@ class Samplex:
 
         q = MP.Queue()
 
+        ran_set_seed(self.random_seed)
+        seeds = np.random.choice(1000000*nthreads, nthreads, replace=False)
+
         #-----------------------------------------------------------------------
         # Launch the threads
         #-----------------------------------------------------------------------
@@ -465,7 +481,8 @@ class Samplex:
             Log( 'Thread %i gets %i' % (id,n) )
             cmdq = MP.Queue()
             ackq = MP.Queue()
-            thr = MP.Process(target=rwalk_burnin, args=(id, n, int(np.ceil(burnin_len/nthreads)), self, q, cmdq, ackq, newp, self.twiddle, eval.copy('A'), evec.copy('A')))
+            thr = MP.Process(target=rwalk_burnin, 
+                             args=(id, n, int(np.ceil(burnin_len/nthreads)), self, q, cmdq, ackq, newp, self.twiddle, eval.copy('A'), evec.copy('A'), seeds[id]))
             threads.append([thr,cmdq,ackq])
             N += n
             id += 1
@@ -473,6 +490,7 @@ class Samplex:
         assert N == nmodels
 
         for thr,cmdq,_ in threads:
+            thr.daemon=True
             thr.start()
             cmdq.put(['CONT'])
 

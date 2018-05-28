@@ -2103,6 +2103,64 @@ def extended_source_size(o, leq,eq,geq):
         row[2, [0,y1,y2]] = -d, 1, -1; leq(row[2])
         row[3, [0,y1,y2]] = +d, 1, -1; geq(row[3])
 
+#@default_prior
+@object_prior
+def source_position_quadrant(o, leq,eq,geq):
+    b = o.basis
+    srcpos_start, srcpos_end = 1+b.offs_srcpos
+    wedge = o.prior_options.get('source_position_quadrant_angle', 90.)
+
+    for i,src in enumerate(o.sources):
+        if src.pos is not None: continue
+
+        x = srcpos_start + 2*i + 0
+        y = srcpos_start + 2*i + 1
+
+        img = src.images[0]
+
+        tx = (360+90 - (img.angle+wedge/2.)) * (np.pi/180.)
+        ty = (360    - (img.angle-wedge/2.)) * (np.pi/180.)
+
+        cx,sx = np.cos(tx), np.sin(tx)
+        cy,sy = np.cos(ty), np.sin(ty)
+        Kx = -b.map_shift*(cx-sx) * src.zcap
+        Ky = -b.map_shift*(sy+cy) * src.zcap
+
+        row = new_row(o,2)
+        row[0, [0,x,y]] = Kx, cx, -sx; geq(row[0])
+        row[1, [0,x,y]] = Ky, sy,  cy; geq(row[1])
+
+@object_prior_check(source_position_quadrant)
+def check_source_position_quadrant(o, sol):
+    b    = o.basis
+    offs = 0 #b.array_offset
+    wedge = o.prior_options.get('source_position_quadrant_angle', 90)
+
+    pix_start,    pix_end    = offs+b.offs_pix
+    srcpos_start, srcpos_end = offs+b.offs_srcpos
+    sm_err = offs+b.offs_sm_err
+
+    for i,src in enumerate(o.sources):
+        if src.pos is not None: continue
+
+        srcpos = srcpos_start + 2*i
+
+        img = src.images[0]
+
+        x = sol[srcpos+0]/src.zcap - b.map_shift
+        y = sol[srcpos+1]/src.zcap - b.map_shift
+
+        tx = (360+90 - (img.angle+wedge/2.)) * (np.pi/180.)
+        ty = (360    - (img.angle-wedge/2.)) * (np.pi/180.)
+        cx,sx = np.cos(tx), np.sin(tx)
+        cy,sy = np.cos(ty), np.sin(ty)
+
+        nx = cx*x + sx*y
+        ny = sy*x + cy*y
+
+        if nx < 0 or ny < 0:
+            Log( "Source position contrained by quadrant is outside quadrant! Source is at (%f,%f). In rotated frame this is (%f,%f), which is outside of upper left quadrant." % (x,y,nx,ny) )
+
 @default_prior
 @object_prior
 def source_position(o, leq,eq,geq):
