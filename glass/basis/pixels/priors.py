@@ -489,7 +489,7 @@ def JPC1time_delay(o, leq, eq, geq):
 @object_prior
 def hubble_constant(o, leq, eq, geq):
     """This requires a particular hubble constant for the object."""
-
+    
     if env().nu is None:
         Log( "[DISABLED] Hubble Constant")
         return
@@ -499,6 +499,35 @@ def hubble_constant(o, leq, eq, geq):
     nu = 1+o.basis.H0
 
     lb, ub = env().nu[0], env().nu[-1]
+    Log( indent + "Lower/Upper bound: {} {}".format(lb, ub))
+
+    if lb is not None and ub is not None:
+        assert ub >= lb, 'Hubble constant contraints must be given as (lower_bound, upper_bound)'
+
+    if lb == ub:
+        row = new_row(o)
+        row[ [0,nu] ] = lb, -1
+        eq(row)
+    else:
+        if ub is not None:
+            row = new_row(o)
+            row[ [0,nu] ] = ub, -1
+            geq(row)
+
+        if lb is not None:
+            row = new_row(o)
+            row[ [0,nu] ] = lb, -1
+            leq(row)
+
+@default_prior
+@object_prior
+def hubble_range5090(o, leq, eq, geq):
+    """This requires a particular hubble constant for the object."""
+
+    nu = 1+o.basis.H0
+    
+    # hardcoded hubble constant between 50 to 90 km/s/Mpc
+    lb, ub = 50 * 206265**2 / 9.778140e+11, 90 * 206265**2 / 9.778140e+11
 
     if lb is not None and ub is not None:
         assert ub >= lb, 'Hubble constant contraints must be given as (lower_bound, upper_bound)'

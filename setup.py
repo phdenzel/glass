@@ -4,8 +4,9 @@ from distutils.sysconfig import get_python_lib, get_python_inc
 import distutils.sysconfig 
 from distutils.ccompiler import new_compiler
 
-#compiler='clang'
-compiler='gcc'
+compiler='clang'
+#compiler='gcc'
+#compiler='gcc-6
 #compiler='icc'
 
 try:
@@ -32,7 +33,7 @@ if compiler=='clang':
                           '-mtune=native',
                           '-Wall']
 
-if compiler=='gcc':
+if compiler=='gcc' or compiler=='gcc-6':
     extra_compile_args = ['-msse3', 
                           #'-mfpmath=sse',
                           '-ftree-vectorize',

@@ -202,7 +202,7 @@ def Re_plot(env, *args, **kwargs):
 
     for m in models:
         obj,data = m['obj,data'][obj_index]
-        print data.keys()
+        # print data.keys()
         if not data['Re']: continue
         Re, a,b, theta = data['Re']
         #pl.gca().add_artist(Circle((rl.real,rl.imag), 0.1, fill=False, lw=2, color='r'))
@@ -946,6 +946,7 @@ def glerrorplot(env, ptype, xkeys, ykeys=[], **kwargs):
 
 @command
 def H0inv_plot(env, **kwargs):
+
     _hist(env, '1/H0', xlabel=r'$H_0^{-1}$ (Gyr)')
     return
 
@@ -972,7 +973,8 @@ def H0inv_plot(env, **kwargs):
         if d:
             #print len(d), d, np.ptp(d), np.sqrt(len(d))
             #pl.hist(d, bins=20, histtype='step', edgecolor=s['c'], zorder=s['z'], label=s['label'])
-            pl.hist(d, bins=np.ptp(d)//1+1, histtype='step', edgecolor=s['c'], zorder=s['z'], label=s['label'], **kwargs)
+            pl.hist(d, bins=np.ptp(d)//1+1, histtype='step', edgecolor=s['c'],
+                    zorder=s['z'], label=s['label'], **kwargs)
 
     #if not_accepted or accepted:
         #pl.legend()
@@ -1298,9 +1300,12 @@ def _hist(env, data_key, **kwargs):
 
             m,u,l = dist_range(h, sigma=sigma)
 
-            pl.axvline(m, c='r', ls='-', zorder = 2)
-            pl.axvline(u, c='g', ls='-', zorder = 2)
-            pl.axvline(l, c='g', ls='-', zorder = 2)
+            # pl.axvline(m, c='r', ls='-', zorder = 2)
+            # pl.axvline(u, c='g', ls='-', zorder = 2)
+            # pl.axvline(l, c='g', ls='-', zorder = 2)
+            pl.axvline(m, c='#fe4365', ls='-', zorder = 2)
+            pl.axvline(u, c='#0bf759', ls='-', zorder = 2)
+            pl.axvline(l, c='#0bf759', ls='-', zorder = 2)
 
             Log( '%s: %f %f %f' % (data_key, m, u, l) )
             Log( '%s: %f +/- %f %f' % (data_key, m, (u-m), (m-l)) )

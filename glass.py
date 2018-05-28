@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
     import glass.glcmds
     import glass.scales
-    #import pytipsy 
+    #import pytipsy
 
     with open(arglist[0], 'r') as f:
         Commands.get_env().input_file = f.read()
