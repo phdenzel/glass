@@ -519,7 +519,7 @@ def hubble_constant(o, leq, eq, geq):
             row[ [0,nu] ] = lb, -1
             leq(row)
 
-@default_prior
+#@default_prior
 @object_prior
 def hubble_range5090(o, leq, eq, geq):
     """This requires a particular hubble constant for the object."""

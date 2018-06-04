@@ -52,6 +52,7 @@ def hires(env, r, refine=1):
 
 @command
 def source_position_wedge(env, angle):
+    o = env.current_object()
     if not (0 <= angle <= 360): raise GLInputError('source_position_wedge: Wedge angle must be between 0 and 360 degrees, inclusive.')
     o.prior_options['source_position_quadrant_angle'] = angle
     
