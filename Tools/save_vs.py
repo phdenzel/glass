@@ -9,12 +9,12 @@ gls = [loadstate(f) for f in opts[1:]]
 
 if 1:
     import pylab as pl
-    from pylab import show, figure, ion, ioff, savefig, gcf, close, clear
+    from pylab import show, figure, ion, ioff, savefig, gcf, close
 if 0:
     import matplotlib as mpl
     mpl.use('Agg')
     import matplotlib.pyplot as pl
-    from matplotlib.pyplot import figure, ion, ioff, savefig, gcf, close, clear
+    from matplotlib.pyplot import figure, ion, ioff, savefig, gcf, close
 
 
 def escape(s):
@@ -228,4 +228,4 @@ ioff()
 
 savefig('viewstate.pdf')
 
-clear()
+close()
