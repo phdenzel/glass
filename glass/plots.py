@@ -130,7 +130,7 @@ def img_plot(env, **kwargs): #src_index=None, with_maximum=True, color=None, wit
                 cs.append(color)
 
         if xs and ys:
-            pl.over(pl.scatter,xs, ys, s=80, c=cs, zorder=1000, alpha=1.0)
+            pl.scatter(xs, ys, s=80, c=cs, zorder=1000, alpha=1.0)
             if with_guide or tight:
                 a = pl.gca()
                 for x,y in zip(xs,ys):
