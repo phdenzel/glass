@@ -2,7 +2,7 @@ from __future__ import division
 from command import command
 #from cosmo import scales
 
-N = 206265
+N = 206265  # 180/pi * 60 * 60 = 1 radian in arcsec
 Munit = 11.988 # Msun
 
 #def get_args(args):
@@ -53,7 +53,7 @@ def convert(type, v, *args):
         return (N**2 / 1e9) / v * age_factor
 
     elif 'H0 in km/s/Mpc to nu' == type:
-        return v * N**2 / 9.778140e+11
+        return v * N**2 / 9.778140e+11  # 1/(km/s/Mpc) = 9.778140e11 years
 
     elif 'nu to H0 in km/s/Mpc' == type:
         return v / N**2 * 9.778140e+11
