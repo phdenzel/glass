@@ -29,8 +29,9 @@ def report(env):
     Log( '=' * 80 )
     Log( pp('Omega Matter = %.4g' % env.omega_matter, '') )
     Log( pp('Omega Lambda = %.4g' % env.omega_lambda, '') )
-    if any(env.nu): Log( pp('H0inv        = %s'   % str_range(convert('nu to H0^-1 in Gyr', env.nu), '%.4g'), '[Gyr]') )
-    if any(env.nu): Log( pp('H0           = %s'   % str_range(convert('nu to H0 in km/s/Mpc',env.nu), '%.4g'), '[km/s/Mpc]') )
+    if (hasattr(env.nu, '__len__') and any(env.nu)) or env.nu:
+        Log( pp('H0inv        = %s'   % str_range(convert('nu to H0^-1 in Gyr', env.nu), '%.4g'), '[Gyr]') )
+        Log( pp('H0           = %s'   % str_range(convert('nu to H0 in km/s/Mpc',env.nu), '%.4g'), '[km/s/Mpc]') )
     Log( pp('H0inv ref    = %s'   % str_range(env.H0inv_ref, '%.4g'), '[Gyr]') )
     Log( pp('filled_beam  = %s' % env.filled_beam, '') )
     Log(  )

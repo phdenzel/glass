@@ -3,7 +3,7 @@ from command import command
 #from cosmo import scales
 
 N = 206265
-Munit = 11.988 # Msun
+Munit = 11.988  # Msun
 
 #def get_args(args):
 #    if len(args) == 2: [obj, data], v = args; H0inv = data['1/H0']
