@@ -5,12 +5,6 @@ from __future__ import division
 import sys
 
 
-
-if __name__ == "__main__":
-    import sys
-    sys.path.append('/Users/phdenzel/glass/')
-
-
 import numpy as np
 from numpy import \
     zeros, amin, amax, min, max, argmax, argmin, abs, vectorize, negative, array, take, \

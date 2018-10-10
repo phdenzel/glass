@@ -479,6 +479,9 @@ def arrival_plot(env, model, **kwargs):
             if with_colorbar: glspl.colorbar()
 
         if 'cmap' in kw: kw.pop('cmap')
+        if 'fignum' in kw: kw.pop('fignum')
+        if 'aspect' in kw: kw.pop('aspect')
+        if 'interpolation' in kw: kw.pop('interpolation')
         if clevels:
             loglev=clevels
             #loglev = logspace(1, log(g.ptp()), clevels, base=math.e) + amin(g)

@@ -33,6 +33,7 @@ def style_iterator(colors='gbrcm'):
             for clr in colors:
                 yield lw, ls, clr
 
+
 Lscale = 2
 Mscale = 1.8e10
 Rcut = 50
@@ -154,49 +155,49 @@ def PlotFigures():
     if 0:
         for g in gls:
             begin_plot()
-            g.kappa_plot(g.ensemble_average, 0, with_contours=True, clevels=20, vmax=1); #Re_plot(env().ensemble_average,0)
-            #g.kappa_plot(g.ensemble_average, 0, with_contours=False, vmax=1); #Re_plot(env().ensemble_average,0)
-            #g.gradient_plot(g.ensemble_average, 0)
+            g.kappa_plot(g.ensemble_average, 0, with_contours=True, clevels=20, vmax=1)  # Re_plot(env().ensemble_average,0)
+            # g.kappa_plot(g.ensemble_average, 0, with_contours=False, vmax=1); #Re_plot(env().ensemble_average,0)
+            # g.gradient_plot(g.ensemble_average, 0)
             end_plot()
 
     if 0:
         for g in gls:
             begin_plot()
             if 'image' in g.meta_info:
-                R = 20 #g.objects[0].basis.maprad
-                #cx,cy = -1.875, 0.08
+                R = 20  # g.objects[0].basis.maprad
+                # cx,cy = -1.875, 0.08
                 cx,cy=0,0
                 g.image_plot(g.meta_info['image'], R, center=[cx,cy])
             s = 0
             if hasattr(g.objects[0], 'stellar_mass'):
                 s = g.objects[0].stellar_mass
 
-            g.kappa_plot(g.ensemble_average, 0, with_contours=True, clevels=20, subtract=s) #, vmax=1, colors='r'); #Re_plot(env().ensemble_average,0)
-            #g.kappa_plot(g.ensemble_average, 0, with_contours=False, vmax=1); #Re_plot(env().ensemble_average,0)
-            #g.gradient_plot(g.ensemble_average, 0)
+            g.kappa_plot(g.ensemble_average, 0, with_contours=True, clevels=20, subtract=s)  #, vmax=1, colors='r'); #Re_plot(env().ensemble_average,0)
+            # g.kappa_plot(g.ensemble_average, 0, with_contours=False, vmax=1)  # Re_plot(env().ensemble_average,0)
+            # g.gradient_plot(g.ensemble_average, 0)
             end_plot()
 
     if 1:
         for g in gls:
             begin_plot()
-#           if 'image' in g.meta_info:
-#               R = 20 #g.objects[0].basis.maprad
-#               #cx,cy = -1.875, 0.08
-#               cx,cy=0,0
-#               g.image_plot(g.meta_info['image'], R, [cx,cy])
+            # if 'image' in g.meta_info:
+            #      R = 20 #g.objects[0].basis.maprad
+            #      #cx,cy = -1.875, 0.08
+            #      cx,cy=0,0
+            #      g.image_plot(g.meta_info['image'], R, [cx,cy])
             g.kappa_plot(g.ensemble_average, 0, with_contours=True, clevels=20) #, vmax=1, colors='r'); #Re_plot(env().ensemble_average,0)
-            #g.kappa_plot(g.ensemble_average, 0, with_contours=False, vmax=1); #Re_plot(env().ensemble_average,0)
-            #g.gradient_plot(g.ensemble_average, 0)
+            # g.kappa_plot(g.ensemble_average, 0, with_contours=False, vmax=1); #Re_plot(env().ensemble_average,0)
+            # g.gradient_plot(g.ensemble_average, 0)
             end_plot()
 
     if 0:
         for g in gls:
             begin_plot()
             g.glhist('N1', label='N1', color='r', xlabel=r'$\theta_E$')
-            #g.glhist('N3', label='N3', color='b', xlabel=r'$\theta_E$')
-            #g.glhist('N4', label='N4', color='m', xlabel=r'$\theta_E$')
+            # g.glhist('N3', label='N3', color='b', xlabel=r'$\theta_E$')
+            # g.glhist('N4', label='N4', color='m', xlabel=r'$\theta_E$')
             g.glhist('N2', label='N2', color='g', xlabel=r'$\theta_E$')
-            #g.glhist('N5', label='N5', color='c', xlabel=r'$\theta_E$')
+            # g.glhist('N5', label='N5', color='c', xlabel=r'$\theta_E$')
             end_plot()
 
     if 1:
@@ -230,6 +231,6 @@ ioff()
 
 show()
 # close()
-#try:
-#except:
+# try:
+# except:
 #    savefig('viewstate.pdf')
