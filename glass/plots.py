@@ -21,9 +21,9 @@ from glass.utils import dist_range
 from scipy.ndimage.filters import correlate1d
 from scipy.misc import central_diff_weights
 
-rc('text', usetex=True)
+#rc('text', usetex=True)
 #rc('text', dvipnghack=True)
-rc('font',**{'family':'serif','serif':['Computer Modern Roman']})
+#rc('font',**{'family':'serif','serif':['Computer Modern Roman']})
 
 _styles = [{'label':r'rejected', 'c':'r', 'ls':'-', 'z':-1, 'line':Line2D([],[],c='r',ls='-')},
            {'label':r'accepted', 'c':'b', 'ls':'-', 'z': 0, 'line':Line2D([],[],c='b',ls='-')},
