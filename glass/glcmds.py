@@ -186,7 +186,7 @@ def savestate(env, fname):
     Log('Saving state to %s' % fname)
 
     env.meta_info['glheader'] = '\n'.join([
-        'GLASS version 0.1',
+        'GLASS version 1.0',
         'CREATED ON: %s' % time.asctime()
     ])
 
