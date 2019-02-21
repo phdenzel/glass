@@ -93,10 +93,21 @@ def local_gradient(env, theta=None, L=None):
     if theta is not None: 
         if not (0 < theta <= 90): raise GLInputError("local_gradient: need 0 < theta <= 90")
         o.prior_options['J3gradient']['theta'] = theta
-        o.prior_options['J2Gradient']['theta'] = theta
+        o.prior_options['J2gradient']['theta'] = theta
 
     if L is not None: o.prior_options['J3gradient']['size']  = L
-    if L is not None: o.prior_options['J2Gradient']['size']  = L
+    if L is not None: o.prior_options['J2gradient']['size']  = L
+
+@command
+def J4_gradient(env, theta=None, theta_min=None):
+    o = env.current_object()
+
+    if theta is not None: 
+        if not (0 < theta <= 90): raise GLInputError("J4_gradient: need 0 < theta <= 90")
+        o.prior_options['J4gradient']['theta'] = theta
+    if theta_min is not None:
+        if not (0 < theta_min <= 90): raise GLInputError("J4_gradient: need 0 < theta_min <= 90")
+        o.prior_options['J4gradient']['theta_min'] = theta_min
 
 @command
 def min_kappa(env, v):

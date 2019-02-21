@@ -1417,6 +1417,7 @@ def J4gradient(o, leq, eq, geq):
     Log( 2*indent + "gradient eqs = %i" % c )
     Log( 2*indent + "sn=%g" % sn )
 
+
 #@default_prior
 @object_prior
 def central_pixel_as_maximum(o, leq, eq, geq):
