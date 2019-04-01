@@ -86,8 +86,8 @@ def PlotFigures():
             g.img_plot(obj_index=0, color='#fe4365')
             g.arrival_plot(g.ensemble_average, obj_index=0, only_contours=True,
                            clevels=75, colors=['#603dd0'])
-            g.arrival_plot(g.ensemble_average, obj_index=1, only_contours=True,
-                           clevels=50, colors=['#da9605'])
+            # g.arrival_plot(g.ensemble_average, obj_index=1, only_contours=True,
+            #                clevels=50, colors=['#da9605'])
             # g.arrival_plot(g.ensemble_average, only_contours=True,
             #                clevels=50, src_index=0, colors='r');
             # g.arrival_plot(g.ensemble_average, only_contours=True,
@@ -99,7 +99,7 @@ def PlotFigures():
                 cx, cy = -0.21, 0
             # g.src_plot(obj_index=0)
             # g.src_plot(g.ensemble_average, obj_index=0)
-            g.external_mass_plot(0)
+            # g.external_mass_plot(0)
         end_plot()
 
     if 1:
