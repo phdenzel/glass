@@ -65,41 +65,26 @@ def end_plot():
         savefig('%s%s.png' % (os.path.splitext(state_file))[0], tag)
 
 
-def PlotFigures():
-    for g in gls:
-        g.make_ensemble_average()
-        g.bw_styles = True
+def PlotFigure(g, title=None):
+    g.make_ensemble_average()
+    g.bw_styles = True
 
     init_plots(4, [2, 4])
     gcf().subplots_adjust(left=0.05, right=0.98)
-    gcf().suptitle('%s' % escape(os.path.splitext(os.path.basename(opts[1]))[0]))
+    if title is not None:
+        gcf().suptitle(title)
 
     if 1:
         begin_plot()
-        for g in gls:
-            if 'image' in g.meta_info:
-                R = 20  # g.objects[0].basis.maprad
-                # cx,cy = -1.875, 0.08
-                # cx,cy=0,0
-            # g.image_plot(g.meta_info['image'], R, [cx,cy])
-            # g.img_plot(obj_index=1)
-            g.img_plot(obj_index=0, color='#fe4365')
-            g.arrival_plot(g.ensemble_average, obj_index=0, only_contours=True,
-                           clevels=75, colors=['#603dd0'])
-            # g.arrival_plot(g.ensemble_average, obj_index=1, only_contours=True,
-            #                clevels=50, colors=['#da9605'])
-            # g.arrival_plot(g.ensemble_average, only_contours=True,
-            #                clevels=50, src_index=0, colors='r');
-            # g.arrival_plot(g.ensemble_average, only_contours=True,
-            #                clevels=50, src_index=4, colors='g');
-            if 1 or 'image' in g.meta_info:
-                R = 9/2., 2.7/2.
-                # g.objects[0].basis.maprad
-                # cx, cy = -1.875, 0.08
-                cx, cy = -0.21, 0
-            # g.src_plot(obj_index=0)
-            # g.src_plot(g.ensemble_average, obj_index=0)
-            # g.external_mass_plot(0)
+        # g.img_plot(obj_index=0)
+        g.img_plot(obj_index=0, color='#fe4365')
+        g.arrival_plot(g.ensemble_average, obj_index=0, only_contours=True,
+                       clevels=75, colors=['#603dd0'])
+        # g.arrival_plot(g.ensemble_average, obj_index=1, only_contours=True,
+        #                clevels=50, colors=['#da9605'])
+        # g.src_plot(obj_index=0)
+        # g.src_plot(g.ensemble_average, obj_index=0)
+        # g.external_mass_plot(0)
         end_plot()
 
     if 1:
@@ -116,116 +101,39 @@ def PlotFigures():
     if 1:
         begin_plot()
         si = style_iterator(colors)
-        for g in gls:
-            lw, ls, clr = si.next()
-            g.glerrorplot('kappa(R)', ['R', 'arcsec'], yscale='linear')
+        lw, ls, clr = si.next()
+        g.glerrorplot('kappa(R)', ['R', 'arcsec'], yscale='linear')
+        end_plot()
+
+    if 1:
+        begin_plot()
+        g.kappa_plot(g.ensemble_average, 0, with_contours=True, clevels=20)
+        # , vmax=1, colors='r')
+        end_plot()
+
+    if 1:
+        begin_plot()
+        g.shear_plot2d()
         end_plot()
 
     if 0:
         begin_plot()
-        si = style_iterator(colors)
-        for g in gls:
-            lw, ls, clr = si.next()
-            g.glerrorplot('kappa(<R)', ['R', 'arcsec'])
+        g.time_delays_plot()
         end_plot()
-
-    if 0:
-        begin_plot()
-        si = style_iterator(colors)
-        for g in gls:
-            lw, ls, clr = si.next()
-            g.glerrorplot('M(<R)', ['R', 'kpc'], yscale='linear')
-        end_plot()
-
-    if 0:
-        begin_plot()
-        si = style_iterator(colors)
-        for g in gls:
-            lw, ls, clr = si.next()
-            g.glerrorplot('Sigma(R)', ['R', 'kpc'], yscale='linear')
-        end_plot()
-
-    if 0:
-        for g in gls:
-            begin_plot()
-            g.kappa_plot(g.ensemble_average, 0, with_contours=True, clevels=20, vmax=1)
-            # Re_plot(env().ensemble_average,0)
-            # g.kappa_plot(g.ensemble_average, 0, with_contours=False, vmax=1);
-            # Re_plot(env().ensemble_average,0)
-            # g.gradient_plot(g.ensemble_average, 0)
-            end_plot()
-
-    if 0:
-        for g in gls:
-            begin_plot()
-            if 'image' in g.meta_info:
-                R = 20
-                # g.objects[0].basis.maprad
-                # cx,cy = -1.875, 0.08
-                cx, cy = 0, 0
-                g.image_plot(g.meta_info['image'], R, center=[cx, cy])
-            s = 0
-            if hasattr(g.objects[0], 'stellar_mass'):
-                s = g.objects[0].stellar_mass
-
-            g.kappa_plot(g.ensemble_average, 0, with_contours=True, clevels=20, subtract=s)
-            # , vmax=1, colors='r')
-            # Re_plot(env().ensemble_average,0)
-            # g.kappa_plot(g.ensemble_average, 0, with_contours=False, vmax=1);
-            # Re_plot(env().ensemble_average,0)
-            # g.gradient_plot(g.ensemble_average, 0)
-            end_plot()
-
-    if 1:
-        for g in gls:
-            begin_plot()
-            # if 'image' in g.meta_info:
-            #     R = 20 #g.objects[0].basis.maprad
-            #     #cx,cy = -1.875, 0.08
-            #     cx,cy=0,0
-            #     g.image_plot(g.meta_info['image'], R, [cx,cy])
-            g.kappa_plot(g.ensemble_average, 0, with_contours=True, clevels=20)
-            # , vmax=1, colors='r');
-            # Re_plot(env().ensemble_average,0)
-            # g.kappa_plot(g.ensemble_average, 0, with_contours=False, vmax=1);
-            # Re_plot(env().ensemble_average,0)
-            # g.gradient_plot(g.ensemble_average, 0)
-            end_plot()
-
-    if 0:
-        for g in gls:
-            begin_plot()
-            g.glhist('N1', label='N1', color='r', xlabel=r'$\theta_E$')
-            # g.glhist('N3', label='N3', color='b', xlabel=r'$\theta_E$')
-            # g.glhist('N4', label='N4', color='m', xlabel=r'$\theta_E$')
-            g.glhist('N2', label='N2', color='g', xlabel=r'$\theta_E$')
-            # g.glhist('N5', label='N5', color='c', xlabel=r'$\theta_E$')
-            end_plot()
-
-    if 1:
-        for g in gls:
-            begin_plot()
-            g.shear_plot2d()
-            end_plot()
-
-    if 1:
-        for g in gls:
-            begin_plot()
-            g.time_delays_plot()
-            end_plot()
 
 
 # ------------------------------------------------------------------------------
-ion()
 
 if len(gls) == 1:
     colors = 'k'
 else:
     colors = 'rgbcm'
 
-PlotFigures()
-ioff()
-
-savefig('viewstate.pdf')
-
-close()
+for i, g in enumerate(gls):
+    ion()
+    fname = os.path.basename(g.global_opts['argv'][i+1])
+    hname = "".join(fname.split('.')[:-1] + ['_vs.pdf'])
+    PlotFigure(g, title="".join(fname.split('.')[:-1]))
+    ioff()
+    savefig(hname)
+    close()
