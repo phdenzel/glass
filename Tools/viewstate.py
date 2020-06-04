@@ -206,7 +206,7 @@ def PlotFigures():
             g.shear_plot2d()
             end_plot()
 
-    if 0:
+    if 1:
         for g in gls:
             begin_plot()
             g.time_delays_plot()

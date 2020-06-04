@@ -78,14 +78,24 @@ def PlotFigure(g, title=None):
         begin_plot()
         # g.img_plot(obj_index=0)
         g.img_plot(obj_index=0, color='#fe4365')
-        g.arrival_plot(g.ensemble_average, obj_index=0, only_contours=True,
+        g.arrival_plot(g.ensemble_average, obj_index=0, src_index=0, only_contours=True,
                        clevels=75, colors=['#603dd0'])
-        # g.arrival_plot(g.ensemble_average, obj_index=1, only_contours=True,
-        #                clevels=50, colors=['#da9605'])
         # g.src_plot(obj_index=0)
         # g.src_plot(g.ensemble_average, obj_index=0)
         # g.external_mass_plot(0)
         end_plot()
+
+    if 0:
+        for i, s in enumerate(g.objects[0].sources):
+            begin_plot()
+            # g.img_plot(obj_index=0)
+            g.img_plot(obj_index=0, color='#fe4365')
+            g.arrival_plot(g.ensemble_average, obj_index=0, src_index=i, only_contours=True,
+                           clevels=75, colors=['#603dd0'])
+            # g.src_plot(obj_index=0)
+            # g.src_plot(g.ensemble_average, obj_index=0)
+            # g.external_mass_plot(0)
+            end_plot()
 
     if 1:
         begin_plot()
@@ -116,7 +126,7 @@ def PlotFigure(g, title=None):
         g.shear_plot2d()
         end_plot()
 
-    if 0:
+    if 1:
         begin_plot()
         g.time_delays_plot()
         end_plot()
