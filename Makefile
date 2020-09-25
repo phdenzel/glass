@@ -9,11 +9,7 @@ PYTHON_INC=$(shell python -c "from distutils.sysconfig import get_python_inc; pr
 PYTHON_LIB=$(shell python -c "from distutils.sysconfig import get_python_lib; print get_python_lib(plat_specific=0)")
 CPATH := "$(PYTHON_INC):$(PYTHON_LIB)/../config"
 UNAME ?= $(shell uname)
-ifeq ($(UNAME),Darwin)
-	LIBRARY_PATH := $(ROOT_DIR)/build/glpk_build/lib
-else
-	LIBRARY_PATH := $(ROOT_DIR)/build/glpk_build/lib64
-endif
+LIBRARY_PATH := $(ROOT_DIR)/build/glpk_build/lib:$(ROOT_DIR)/build/glpk_build/lib64
 
 ifeq ($(UNAME),Darwin)
   GLPK_FLAGS="CFLAGS=-arch x86_64"
