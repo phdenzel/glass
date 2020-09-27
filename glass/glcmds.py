@@ -208,7 +208,7 @@ def loadstate(env, fname, setenv=True):
     setenv is False the environment will not be replaced. Return the loaded
     environment.  
     """
-    x = load(fname)['arr_0'].item()
+    x = load(fname, allow_pickle=True)['arr_0'].item()
     for o in x.objects:
         for i,s in enumerate(o.sources):
             if not hasattr(s,'index'):
